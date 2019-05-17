@@ -11,13 +11,13 @@
 
 ### v1.0.0 使用
 
-获取代码;
+> 获取代码;
 
 ```bash
 $ go get "github.com/yahaa/logme@v1.0.0"
 ```
 
-示例:
+> 示例:
 
 ```go
 package main
@@ -69,12 +69,14 @@ func main() {
 
 ### v2.0.0 使用
 
-获取代码:
+> 获取代码:
+
 ```bash
 $ go get "github.com/yahaa/logme@v2.0.0"
 ```
 
-示例:
+> 示例:
+
 ```go
 package logme
 
