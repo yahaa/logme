@@ -13,7 +13,7 @@
 
 获取代码;
 
-```go
+```bash
 $ go get "github.com/yahaa/logme@v1.0.0"
 ```
 
@@ -71,7 +71,7 @@ func main() {
 
 获取代码:
 ```bash
-$ go get go get "github.com/yahaa/logme@v2.0.0"
+$ go get "github.com/yahaa/logme@v2.0.0"
 ```
 
 示例:
