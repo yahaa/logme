@@ -1,5 +1,11 @@
 ### logrus 封装
 
+### 下载
+
+```go
+go get "github.com/yahaa/logme"
+```
+
 ### 使用
 
 ```go
