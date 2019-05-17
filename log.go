@@ -21,12 +21,16 @@ var (
 )
 
 const (
-	GOPATH = "GOPATH"
+	goPath = "GOPATH"
 )
 
 func init() {
 	// default log writer to stdout
-	Log, _ = New("default", "debug")
+	var err error
+	Log, err = New("default", "debug")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func New(svc, level string, args ...interface{}) (log *logrus.Logger, err error) {
@@ -68,21 +72,15 @@ func New(svc, level string, args ...interface{}) (log *logrus.Logger, err error)
 	return newLog(svc, level, path, name, &maxAge, &rota)
 }
 
-// InitLog init
+// newLog
 func newLog(svc, logLevel, logPath, filename string, maxAge, rotaTime *time.Duration) (log *logrus.Logger, err error) {
 	var (
 		basePath = path.Join(logPath, filename)
 		age      = time.Hour * 24 * 7
 		rota     = time.Hour
-	)
 
-	if !path.IsAbs(basePath) {
-		pwd, err := os.Getwd()
-		if err != nil {
-			return nil, err
-		}
-		basePath = path.Join(pwd, basePath)
-	}
+		fullPath string
+	)
 
 	if maxAge != nil {
 		age = *maxAge
@@ -98,9 +96,24 @@ func newLog(svc, logLevel, logPath, filename string, maxAge, rotaTime *time.Dura
 	}
 
 	if basePath != "" {
+		_, err := os.Stat(logPath)
+		if err != nil {
+			return nil, err
+		}
+
+		if !path.IsAbs(basePath) {
+			pwd, err := os.Getwd()
+			if err != nil {
+				return nil, err
+			}
+			fullPath = path.Join(pwd, basePath)
+		} else {
+			fullPath = basePath
+		}
+
 		w, err := rotatelogs.New(
-			basePath+".%Y%m%d%H%M",
-			rotatelogs.WithLinkName(basePath), // 生成软链，指向最新日志文
+			fullPath+".%Y%m%d%H%M",
+			rotatelogs.WithLinkName(fullPath), // 生成软链，指向最新日志文
 			rotatelogs.WithMaxAge(age),        // 文件最大保存时间
 			rotatelogs.WithRotationTime(rota), // 日志切割时间间隔
 		)
@@ -135,7 +148,7 @@ func newLog(svc, logLevel, logPath, filename string, maxAge, rotaTime *time.Dura
 }
 
 func caller(f *runtime.Frame) (string, string) {
-	repPath := fmt.Sprintf("%s/src/", os.Getenv(GOPATH))
+	repPath := fmt.Sprintf("%s/src/", os.Getenv(goPath))
 	filename := strings.Replace(f.File, repPath, "", -1)
 	return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
 }
