@@ -5,15 +5,15 @@
 * 实现了常用的 Log 终端输出带 caller 字段
 * 实现了多 log 实例的构造函数，支持写入到文件，并对 log 文件进行切割，设置过期时间
 
-### v2.0.0 实现了 zap 库的封装
+### v2.0.0 封装了 zap 库实现了如下功能
 * 实现了默认 Log ，终端输出，并且带 caller 字段。
-* * 实现了多 log 实例的构造函数，支持写入到文件，并对 log 文件进行切割，设置过期时间，对 log 进行压缩。
+* 实现了多 log 实例的构造函数，支持写入到文件，并对 log 文件进行切割，设置过期时间，对 log 进行压缩。
 
 ### v1.0.0 使用
 
 获取代码;
 
-```go
+```bash
 $ go get "github.com/yahaa/logme@v1.0.0"
 ```
 
@@ -71,7 +71,7 @@ func main() {
 
 获取代码:
 ```bash
-$ go get go get "github.com/yahaa/logme@v2.0.0"
+$ go get "github.com/yahaa/logme@v2.0.0"
 ```
 
 示例:
