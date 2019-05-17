@@ -1,19 +1,30 @@
-### logrus 封装
+## 常用第三方 log 库封装
 
-### 下载
+### v1.0.0 封装了 logrus 库实现了如下功能
+
+* 实现了常用的 Log 终端输出带 caller 字段
+* 实现了多 log 实例的构造函数，支持写入到文件，并对 log 文件进行切割，设置过期时间
+
+### v2.0.0 实现了 zap 库的封装
+* 实现了默认 Log ，终端输出，并且带 caller 字段。
+* * 实现了多 log 实例的构造函数，支持写入到文件，并对 log 文件进行切割，设置过期时间，对 log 进行压缩。
+
+### v1.0.0 使用
+
+获取代码;
 
 ```go
-go get "github.com/yahaa/logme"
+$ go get "github.com/yahaa/logme@v1.0.0"
 ```
 
-### 使用
+示例:
 
 ```go
 package main
 
 import (
 	"time"
-
+	
 	"github.com/yahaa/logme"
 )
 
@@ -54,4 +65,38 @@ func main() {
 
 	appLog2.Info("this is test 3")
 }
+```
+
+### v2.0.0 使用
+
+获取代码:
+```bash
+$ go get go get "github.com/yahaa/logme@v2.0.0"
+```
+
+示例:
+```go
+package logme
+
+import (
+	"testing"
+	"time"
+	
+	"go.uber.org/zap"
+)
+
+func TestNew(t *testing.T) {
+	Log.With(zap.String("svc", "test")).Info("this is test")
+
+	newLog := New("debug", "")
+	newLog.With(zap.String("svc", "newLog")).Info("this is new log")
+
+	newLog1 := New("debug", "./xxx/test.log", 1, 1)
+
+	for {
+		newLog1.With(zap.String("svc", "newLog1")).Info("this is new log 1")
+		time.Sleep(time.Second)
+	}
+}
+
 ```
